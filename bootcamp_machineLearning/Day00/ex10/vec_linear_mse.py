@@ -1,20 +1,20 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    linear_mse.py                                      :+:      :+:    :+:    #
+#    vec_linear_mse.py                                  :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: jdussert <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/01/22 11:04:59 by jdussert          #+#    #+#              #
-#    Updated: 2020/01/22 15:02:55 by jdussert         ###   ########.fr        #
+#    Created: 2020/01/22 14:00:19 by jdussert          #+#    #+#              #
+#    Updated: 2020/01/22 15:01:51 by jdussert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import numpy as np
 
-def linear_mse(x, y, theta):
+def vec_linear_mse(x, y, theta):
 	"""Computes the mean squared error of three non-empty numpy.ndarray,
-using a for-loop. The three arrays must have compatible dimensions.
+without any for-loop. The three arrays must have compatible dimensions.
     Args:
      y: has to be an numpy.ndarray, a vector of dimension m * 1.
      x: has to be an numpy.ndarray, a matrix of dimesion m * n.
@@ -26,21 +26,20 @@ using a for-loop. The three arrays must have compatible dimensions.
     Raises:
      This function should not raise any Exception.
 	"""
-	len_x = np.shape(x)
-	len_y = np.shape(y)
 	m = np.shape(x)[0]
 	n = np.shape(x)[1]
-	if m == 0 or n == 0 or m != np.shape(y)[0] or n != np.shape(theta)[0]:
-		return None
 	res = 0
-	for i in range(m):
-		res += (np.dot(theta, x[i]) - y[i])**2
-	res /= float(m)
-	return res
+	i = 0
+	if m == 0 or n == 0 or n != np.shape(theta)[0] or m != np.shape(y)[0]:
+		return None
+	res = np.dot(x, theta) - y
+	res = np.dot(np.transpose(res), res)
+	res /= m
+	return float(res)
 
 # Examples :
 X = np.array([
-	    [ -6, -7, -9],
+    	[ -6, -7, -9],
         [ 13, -2, 14],
         [ -7, 14, -1],
         [ -8, -4, 6],
@@ -49,4 +48,4 @@ X = np.array([
         [ 9, -11, 8]])
 Y = np.array([2, 14, -13, 5, 12, 4, -19])
 Z = np.array([3,0.5,-6])
-print("My linear_mse :\n", linear_mse(X, Y, Z))
+print("My vec_linear_mse :\n", vec_linear_mse(X, Y, Z))
